@@ -1,0 +1,25 @@
+{
+  "name": "nodejstodo",
+  "version": "1.0.0",
+  "description": "learn and practice NodeJs\r test Commit",
+  "homepage": "https://github.com/trongdat17/NodeJs_todo#readme",
+  "bugs": {
+    "url": "https://github.com/trongdat17/NodeJs_todo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trongdat17/NodeJs_todo.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {}
+}
