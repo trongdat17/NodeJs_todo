@@ -1,8 +1,8 @@
 import Todo from "../models/Todo.js";
 import express from "express";
-const router = express.Router();
+const todoRouter = express.Router();
 
-router.get("/", async (req, res) => {
+todoRouter.get("/", async (req, res) => {
     try {
         const todos = await Todo.find();    
     res.json(todos);
@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     }   
 });
 
-router.post("/", async (req, res) => {
+todoRouter.post("/", async (req, res) => {
     const todo = new Todo({
         task: req.body.task,
         time: req.body.time,
@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.delete("/:id", async (req, res) => {
+todoRouter.delete("/:id", async (req, res) => {
 
     const id = req.params.id;
     try{
@@ -47,7 +47,7 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
-router.patch("/:id", async (req, res) => {
+todoRouter.patch("/:id", async (req, res) => {
     const id = req.params.id;
     const {time} = req.body;
 
@@ -71,4 +71,4 @@ router.patch("/:id", async (req, res) => {
     }
 });
 
-export default router;
+export default todoRouter;
