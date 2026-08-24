@@ -6,13 +6,13 @@ todoRouter.get("/", async (req, res) => {
     try {
         const todos = await Todo.find({ owner: req.user.userId });
 
-        console.log("req.user =", req.user);
-        console.log("req.user.userId =", req.user?.userId);
-        if (!todos) {
-            return res.status(401).json({
-                message: 'Can not find any todo for current user'
-            })
-        }
+        // console.log("req.user =", req.user);
+        // console.log("req.user.userId =", req.user?.userId);
+        // if (!todos) {
+        //     return res.status(401).json({
+        //         message: 'Can not find any todo for current user'
+        //     })
+        // }
         res.json(todos);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -39,7 +39,7 @@ todoRouter.delete("/:id", async (req, res) => {
 
     const id = req.params.id;
     try {
-        const result = await Todo.findByIdAndDelete(id);
+        const result = await Todo.findByIdAndDelete({_id: id, owner: req.user.userId});
         if (!result) {
             return res.status(404).json({
                 message: "Can't find the id"
@@ -61,7 +61,7 @@ todoRouter.patch("/:id", async (req, res) => {
     const { time } = req.body;
 
     try {
-        const result = await Todo.findByIdAndUpdate(id, { time }, { new: true });
+        const result = await Todo.findByIdAndUpdate({_id: id, owner: req.user.userId}, { time }, { new: true });
         if (!result) {
             return res.status(404).json({
                 message: "Can't update data"

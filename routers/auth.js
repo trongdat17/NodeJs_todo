@@ -11,14 +11,15 @@ userRouter.post("/register", async (req, res) => {
       username: username,
       password: password,
     });
-    if (!result) {
-      return res.status(201).json({
-        message: "Create a new user unsuccessfully.",
-      });
-    }
-    res.status(200).json({
+    // if (!result) {
+    //   return res.status(201).json({
+    //     message: "Create a new user unsuccessfully.",
+    //   });
+    // }
+    res.status(201).json({
       message: "Create a new user successfully.",
-      Data: result,
+      userId: result._id,
+      username: result.username,
     });
   } catch (err) {
     console.log('test2');
@@ -34,7 +35,7 @@ userRouter.post("/login", async (req, res) => {
     const user = await User.findOne({ username: username });
     if (!user) {
       return res.status(401).json({
-        message: "Can not find username: ${username}",
+        message: `Can not find username: ${username}`,
       });
     }
     const isMatch = await user.comparePassword(password);
