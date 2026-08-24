@@ -13,8 +13,13 @@ const todoSchema = new mongoose.Schema({
     },
     completed: {
         type: Boolean,
-        default: false  
-}
+        default: false
+    },
+    owner: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 });
 
 export default mongoose.model('Todo', todoSchema);

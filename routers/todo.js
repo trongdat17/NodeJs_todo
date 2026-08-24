@@ -4,19 +4,28 @@ const todoRouter = express.Router();
 
 todoRouter.get("/", async (req, res) => {
     try {
-        const todos = await Todo.find();    
-    res.json(todos);
+        const todos = await Todo.find({ owner: req.user.userId });
+
+        console.log("req.user =", req.user);
+        console.log("req.user.userId =", req.user?.userId);
+        if (!todos) {
+            return res.status(401).json({
+                message: 'Can not find any todo for current user'
+            })
+        }
+        res.json(todos);
     } catch (err) {
         res.status(500).json({ message: err.message });
-    }   
+    }
 });
 
 todoRouter.post("/", async (req, res) => {
     const todo = new Todo({
         task: req.body.task,
         time: req.body.time,
-        completed: req.body.completed
-    }); 
+        completed: req.body.completed,
+        owner: req.user.userId
+    });
 
     try {
         const savedTodo = await todo.save();
@@ -29,9 +38,9 @@ todoRouter.post("/", async (req, res) => {
 todoRouter.delete("/:id", async (req, res) => {
 
     const id = req.params.id;
-    try{
+    try {
         const result = await Todo.findByIdAndDelete(id);
-        if(!result){
+        if (!result) {
             return res.status(404).json({
                 message: "Can't find the id"
             })
@@ -40,7 +49,7 @@ todoRouter.delete("/:id", async (req, res) => {
             message: "Delete sucessfully"
         })
     }
-    catch(err){
+    catch (err) {
         res.status(500).json({
             message: err.message
         })
@@ -49,12 +58,11 @@ todoRouter.delete("/:id", async (req, res) => {
 
 todoRouter.patch("/:id", async (req, res) => {
     const id = req.params.id;
-    const {time} = req.body;
+    const { time } = req.body;
 
-    try{
-        const result = await Todo.findByIdAndUpdate(id, {time}, {new: true});
-        if(!result)
-        {
+    try {
+        const result = await Todo.findByIdAndUpdate(id, { time }, { new: true });
+        if (!result) {
             return res.status(404).json({
                 message: "Can't update data"
             });
@@ -64,9 +72,9 @@ todoRouter.patch("/:id", async (req, res) => {
             data: result
         })
     }
-    catch(err){
+    catch (err) {
         res.status(500).json({
-            message:err.message
+            message: err.message
         })
     }
 });
